@@ -1,50 +1,53 @@
 # USDA Beef Grade Classifier
 
 This repository contains an AI model developed for the USDA's inaugural hackathon at Colorado State University. Utilizing PyTorch, the image classifier within this project aims to predict the beef grade of ribeye cuts between the twelfth and thirteenth ribs with moderate accuracy.
-Overview
+
+## Overview
 
 The classifier operates based on USDA standards, which categorize beef grades into five tiers: Select, Low Choice, Standard, Upper 2/3 Choice, and Prime.
-Important Files and Directories:
-## Files:
 
-    ### DataReader.csv:
+## Important Files and Directories:
 
-    CSV file containing image file names, carcass IDs, scores, and grade categories for the USDA-provided images. For this project, only the filename and grade columns were utilized.
+### Files:
 
-    ### FileReader.py:
+#### DataReader.csv:
 
-    Python script that corrects filenames from the CSV to accurately map them to files in the images directory. The corrected entries are stored in a new file called annotations.csv. This correction was necessary to provide the correct paths to the image classifier.
+CSV file containing image file names, carcass IDs, scores, and grade categories for the USDA-provided images. For this project, only the filename and grade columns were utilized.
 
-    ### DataSeperator.py:
+#### FileReader.py:
 
-    Python script that utilizes the updated annotations.csv file to divide images into training and validation sets. Images are placed into corresponding subdirectories based on their grade quality attribute extracted from the CSV file.
+Python script that corrects filenames from the CSV to accurately map them to files in the images directory. The corrected entries are stored in a new file called annotations.csv. This correction was necessary to provide the correct paths to the image classifier.
 
-    ### ImageClassifier.py:
+#### DataSeperator.py:
 
-    Python script implementing the image classifier using PyTorch. It loops through the dataset's images multiple times, displaying the loss after each iteration.
+Python script that utilizes the updated annotations.csv file to divide images into training and validation sets. Images are placed into corresponding subdirectories based on their grade quality attribute extracted from the CSV file.
 
-    ### Overview of functionality:
+#### ImageClassifier.py:
 
-        Initializes datasets for training and validation, transforming each pixel value into a range between 0 and 1. The data is flattened into a long vector representing each image.
+Python script implementing the image classifier using PyTorch. It loops through the dataset's images multiple times, displaying the loss after each iteration.
 
-        Constructs a neural network to process the image vectors, reducing them to represent the five beef grades. The grade with the highest value is reported. This is achieved using PyTorch's default cross-entropy loss neural network.
+#### Overview of functionality:
 
-        Trains the model by iterating through the training images, learning consistencies within beef grades. The process continues until completion based on the specified number of iterations.
+- Initializes datasets for training and validation, transforming each pixel value into a range between 0 and 1. The data is flattened into a long vector representing each image.
 
-## Directories:
+- Constructs a neural network to process the image vectors, reducing them to represent the five beef grades. The grade with the highest value is reported. This is achieved using PyTorch's default cross-entropy loss neural network.
 
-    ### Images:
+- Trains the model by iterating through the training images, learning consistencies within beef grades. The process continues until completion based on the specified number of iterations.
 
-    Contains all USDA-provided images used for training and validation of the AI model. The directory comprises 14,000 images of ribeyes.
+### Directories:
 
-    ### Training:
+#### Images:
 
-    Created by DataSeperator.py, this directory holds the majority of images used for training the model. Images are organized into subdirectories based on their verified USDA rating label, facilitating continuous feedback on each prediction.
+Contains all USDA-provided images used for training and validation of the AI model. The directory comprises 14,000 images of ribeyes.
 
-    ### Validation:
+#### Training:
 
-    Also created by DataSeperator.py, this directory contains 10% of the images for testing the model's accuracy after each training cycle.
+Created by DataSeperator.py, this directory holds the majority of images used for training the model. Images are organized into subdirectories based on their verified USDA rating label, facilitating continuous feedback on each prediction.
 
-    ### Testing:
+#### Validation:
 
-    Contains raw images of ribeyes not seen during training, enabling evaluation of the model's ability to predict unseen images.
+Also created by DataSeperator.py, this directory contains 10% of the images for testing the model's accuracy after each training cycle.
+
+#### Testing:
+
+Contains raw images of ribeyes not seen during training, enabling evaluation of the model's ability to predict unseen images.
