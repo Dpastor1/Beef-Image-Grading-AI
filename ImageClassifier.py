@@ -1,5 +1,6 @@
 
 
+from tkinter import Image
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,14 +9,10 @@ import torchvision
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 import timm
-
-import matplotlib.pyplot as plt # For data viz
-import pandas as pd
-import numpy as np
-import sys
+import matplotlib.pyplot as plt
 from tqdm.notebook import tqdm
 
-class PlayingCardDataset(Dataset):
+class BeefDataset(Dataset):
     def __init__(self, data_dir, transform=None):
         self.data = ImageFolder(data_dir, transform=transform)
 
@@ -31,7 +28,7 @@ class PlayingCardDataset(Dataset):
     def classes(self):
         return self.data.classes
 
-dataset = PlayingCardDataset(
+dataset = BeefDataset(
     data_dir='training'
 )
 
@@ -42,12 +39,12 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-dataset = PlayingCardDataset(data_dir, transform)
+dataset = BeefDataset(data_dir, transform)
 dataloader = DataLoader(dataset, batch_size = 32, shuffle= True)
 
-class SimpleCardClassifer(nn.Module):
+class SimpleGradeClassifer(nn.Module):
     def __init__(self, num_classes=5):
-        super(SimpleCardClassifer, self).__init__()
+        super(SimpleGradeClassifer, self).__init__()
         # Where we define all the parts of the model
         self.base_model = timm.create_model('efficientnet_b0', pretrained=True)
         self.features = nn.Sequential(*list(self.base_model.children())[:-1])
@@ -67,7 +64,7 @@ class SimpleCardClassifer(nn.Module):
     
 
 
-model = SimpleCardClassifer(num_classes=5)
+model = SimpleGradeClassifer(num_classes=5)
 
 #Loss function
 criterion = nn.CrossEntropyLoss()
@@ -78,13 +75,12 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-train_folder = '/home/danish/Spring24/Data Science/Wagu-Inspection/training'
-valid_folder = '/home/danish/Spring24/Data Science/Wagu-Inspection/validation'
+train_folder = 'training'
+valid_folder = 'validation'
 #test_folder = 'Validation'
 
-train_dataset = PlayingCardDataset(train_folder, transform=transform)
-val_dataset = PlayingCardDataset(valid_folder, transform=transform)
-#test_dataset = PlayingCardDataset(test_folder, transform=transform)
+train_dataset = BeefDataset(train_folder, transform=transform)
+val_dataset = BeefDataset(valid_folder, transform=transform)
 
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
@@ -99,7 +95,7 @@ train_losses, val_losses = [], []
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-model = SimpleCardClassifer(num_classes=5)
+model = SimpleGradeClassifer(num_classes=5)
 model.to(device)
 
 criterion = nn.CrossEntropyLoss()
@@ -137,7 +133,16 @@ for epoch in range(num_epochs):
     val_losses.append(val_loss)
     print(f"Epoch {epoch+1}/{num_epochs} - Train loss: {train_loss}, Validation loss: {val_loss}")
 
-
+plt.plot(train_losses, label='Training loss')
+plt.plot(val_losses, label='Validation loss')
+plt.legend()
+plt.title("Loss over epochs")
+plt.show()
+plt.plot(train_losses, label='Training loss')
+plt.plot(val_losses, label='Validation loss')
+plt.legend()
+plt.title("LImagever epochs")
+plt.show()
 # Load and preprocess the image
 def preprocess_image(image_path, transform):
     image = Image.open(image_path).convert("RGB")
@@ -169,16 +174,15 @@ def visualize_predictions(original_image, probabilities, class_names):
     plt.tight_layout()
     plt.show()
 
-for i in range(9):
-    test_image = "/home/danish/Spring24/Data Science/Wagu-Inspection/testing/0000100" + str(i + 1) + "-2.tif"
-    transform = transforms.Compose([
-        transforms.Resize((128, 128)),
-        transforms.ToTensor()
-    ])
+# for i in range(9):
+#     test_image = "/home/danish/Spring24/Data Science/Wagu-Inspection/testing/0000100" + str(i + 1) + "-2.tif"
+#     transform = transforms.Compose([
+#         transforms.Resize((128, 128)),
+#         transforms.ToTensor()
+#     ])
 
-    original_image, image_tensor = preprocess_image(test_image, transform)
-    probabilities = predict(model, image_tensor, device)
+#     original_image, image_tensor = preprocess_image(test_image, transform)
+#     probabilities = predict(model, image_tensor, device)
 
-    # Assuming dataset.classes gives the class names
-    class_names = dataset.classes 
-    visualize_predictions(original_image, probabilities, class_names)
+#     class_names = dataset.classes 
+#     visualize_predictions(original_image, probabilities, class_names)
