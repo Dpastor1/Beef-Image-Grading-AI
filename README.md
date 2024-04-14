@@ -57,4 +57,17 @@ Contains raw images of ribeyes not seen during training, enabling evaluation of 
 
 ## Loss
 
-![Loss Over Epochs](resultImages/Screenshot from 2024-04-13 20-03-05.png)
+
+![Loss Over Epochs](https://github.com/Dpastor1/Beef-Image-Grading-AI/blob/4e2d890a0bab847e21bbb3f7f45e765290ed9dfc/resultImages/Screenshot%20from%202024-04-13%2020-03-05.png)
+
+This amount of loss shown for the validation set indicates that there are some issues with the image classifier. The most likely result is that our image classifier is learning to remember which image is which, rather than actaully learning how to tell the categories apart.
+
+## Gradings
+
+![Test Image Low Choice](https://github.com/Dpastor1/Beef-Image-Grading-AI/blob/4e2d890a0bab847e21bbb3f7f45e765290ed9dfc/resultImages/Screenshot%20from%202024-04-08%2021-29-48.png)
+
+![Test Image Select Grade](https://github.com/Dpastor1/Beef-Image-Grading-AI/blob/4e2d890a0bab847e21bbb3f7f45e765290ed9dfc/resultImages/Screenshot%20from%202024-04-08%2021-36-08.png)
+
+![Test Image Prime](https://github.com/Dpastor1/Beef-Image-Grading-AI/blob/4e2d890a0bab847e21bbb3f7f45e765290ed9dfc/resultImages/Screenshot%20from%202024-04-08%2021-04-49.png)
+
+Every single resulting prediction came out as either select or low choice. This shows that the classifier is certainly flawed. I think the most likely reason for this is the result of the data set given. The majority of the data given was of low choice or select grade, with only some exceptions for the other grades. This likely caused the model to assume every steak was one of those two options. This is also supported by the model being correct 95% of the time when dealing with a select or low choice steak.
