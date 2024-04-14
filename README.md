@@ -51,3 +51,10 @@ Also created by DataSeperator.py, this directory contains 10% of the images for 
 #### Testing:
 
 Contains raw images of ribeyes not seen during training, enabling evaluation of the model's ability to predict unseen images.
+
+
+# Results
+
+## Loss
+
+![Loss Over Epochs](resultImages/Screenshot from 2024-04-13 20-03-05.png)
