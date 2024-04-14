@@ -3,6 +3,7 @@ import shutil
 import csv
 import random
 
+
 # Create directories for training and validation
 os.makedirs("training", exist_ok=True)
 os.makedirs("validation", exist_ok=True)
